@@ -6,23 +6,32 @@ const sendbtn = document.querySelector("#send");
 const tbody = document.querySelector("tbody");
 const cloudnames = [];
 const clouddatas = [];
-handshakebtn.onclick = function () {
-	window.opener.postMessage({
-		type: "handshake"
-	}, "*")
-}
-devlogbtn.onclick = function () {
-	window.opener.postMessage({
-		type: "system_switchlog"
-	}, "*");
-}
-sendbtn.onclick = function () {
-	window.opener.postMessage({
-		type: "send",
-		terget: terget.value,
-		value: valueinput.value
-	}, "*");
-}
+handshakebtn.onclick = () => {
+	window.opener.postMessage(
+		{
+			type: "handshake",
+		},
+		"*",
+	);
+};
+devlogbtn.onclick = () => {
+	window.opener.postMessage(
+		{
+			type: "system_switchlog",
+		},
+		"*",
+	);
+};
+sendbtn.onclick = () => {
+	window.opener.postMessage(
+		{
+			type: "send",
+			terget: terget.value,
+			value: valueinput.value,
+		},
+		"*",
+	);
+};
 /*
 clearlogbtn.onclick = function () {
 	result = confirm("ログを消去しますか？");
@@ -41,7 +50,7 @@ window.addEventListener("message", (request) => {
 			title.append(message.name);
 			const htmldata = document.createElement("th");
 			htmldata.className = "data";
-			htmldata.onclick = function() {
+			htmldata.onclick = function () {
 				console.log(this);
 				const copy = document.createElement("input");
 				copy.value = this.textContent;
@@ -52,8 +61,8 @@ window.addEventListener("message", (request) => {
 				document.execCommand("copy");
 				copy.remove();
 				alert("値をコピーしました！");
-			}
-			tr.append(title,htmldata);
+			};
+			tr.append(title, htmldata);
 			tbody.append(tr);
 			// 選択エリアに追加
 			const option = document.createElement("option");
@@ -61,15 +70,16 @@ window.addEventListener("message", (request) => {
 			terget.append(option);
 		}
 		clouddatas[cloudnames.indexOf(message.name)] = message.value;
-		document.querySelectorAll("th.data")[cloudnames.indexOf(message.name)].textContent = message.value;
+		document.querySelectorAll("th.data")[
+			cloudnames.indexOf(message.name)
+		].textContent = message.value;
 	});
-
-})
+});
 //setInterval(() => {
 //	if(!window.opener) {
 //		window.close();
 //	}
 //},1000);
-window.opener.onunload = function() {
+window.opener.onunload = () => {
 	window.close();
-}
+};
