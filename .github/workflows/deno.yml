@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+      - name: Setup Bun
+        # You may pin to the exact commit or the version.
+        # uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76
+        uses: oven-sh/setup-bun@v2
+      - name: Install deps
+        run: bun i
+      - name: Build
+        run: bun run build
+      - name: Publish
+        run: bunx jsr publish
+                
