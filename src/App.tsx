@@ -1,7 +1,7 @@
-import { createSignal, Show } from "solid-js";
+import { Show, createSignal } from "solid-js";
+import { createStore } from "solid-js/store";
 import { Manager } from "./features/manager";
 import { type ManagerStore, StoreContext } from "./store";
-import { createStore } from "solid-js/store";
 
 function App() {
 	const [getIsOpen, setIsOpen] = createSignal(false);
@@ -12,25 +12,41 @@ function App() {
 			send: undefined,
 		},
 		cloudData: {},
-	})
+	});
 	const [store, setStore] = _store;
 
 	return (
 		<StoreContext.Provider value={_store}>
 			<div class="fixed right-0 bottom-0 p-4">
-				<div class="bg-slate-50 drop-shadow-sm transition-all" classList={{
-					'rounded-full flex justify-center items-center w-10 h-10 p-2 hover:bg-slate-100': !getIsOpen(),
-					'rounded-md w-50 h-80 flex flex-col gap-2 p-4': getIsOpen(),
-				}}>
-					<div class="flex items-center w-full gap-2" classList={{
-						'justify-start': getIsOpen(),
-						'justify-center h-full': !getIsOpen(),
-					}}>
-						<button type="button" onClick={() => setIsOpen(true)} title="Cloud Manager" class="bg-slate-900 w-6 h-6 i-tabler-cloud" />
+				<div
+					class="bg-slate-50 drop-shadow-sm transition-all"
+					classList={{
+						"rounded-full flex justify-center items-center w-10 h-10 p-2 hover:bg-slate-100":
+							!getIsOpen(),
+						"rounded-md w-50 h-80 flex flex-col gap-2 p-4": getIsOpen(),
+					}}
+				>
+					<div
+						class="flex items-center w-full gap-2"
+						classList={{
+							"justify-start": getIsOpen(),
+							"justify-center h-full": !getIsOpen(),
+						}}
+					>
+						<button
+							type="button"
+							onClick={() => setIsOpen(true)}
+							title="Cloud Manager"
+							class="bg-slate-900 w-6 h-6 i-tabler-cloud"
+						/>
 						<Show when={getIsOpen()}>
 							<div>Cloud Manager</div>
 							<div class="flex flex-1 justify-end">
-								<button type="button" onClick={() => setIsOpen(false)} class="bg-slate-900 w-4 h-4 i-tabler-chevron-down" />
+								<button
+									type="button"
+									onClick={() => setIsOpen(false)}
+									class="bg-slate-900 w-4 h-4 i-tabler-chevron-down"
+								/>
 							</div>
 						</Show>
 					</div>

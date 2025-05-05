@@ -1,0 +1,12 @@
+{
+	"$schema": "https://jsr.io/schema/config-file.v1.json",
+	"name": "@pnsk-lab/scratch-cloud-manager",
+	"version": "0.1.0",
+	"exports": {
+		".": "./launch.ts"
+	},
+	"publish": {
+		"exclude": ["src"],
+		"include": ["dist", "launch.ts"]
+	}
+}

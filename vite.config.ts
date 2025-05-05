@@ -1,7 +1,7 @@
 import tailwind from "@tailwindcss/vite";
-import { defineConfig, type Plugin } from "vite";
-import solid from "vite-plugin-solid";
 import colors from "picocolors";
+import { type Plugin, defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 function forScratch(): Plugin {
 	return {
@@ -11,9 +11,8 @@ function forScratch(): Plugin {
 				res.setHeader("Access-Control-Allow-Origin", "https://scratch.mit.edu");
 				if (req.url === "/") {
 					try {
-						const transformedResult = await server.transformRequest(
-							"/src/index.tsx",
-						);
+						const transformedResult =
+							await server.transformRequest("/src/dev.ts");
 						const code = transformedResult?.code || "";
 						res.setHeader("Content-Type", "application/javascript");
 						res.setHeader(
@@ -40,17 +39,15 @@ function forScratch(): Plugin {
 			server.printUrls = () => {
 				const res = _printUrls();
 				process.stdout.write(
-					`  ${colors.green("➜")}  ${colors.bold("Scratch")}: ${
-						colorUrl("https://scratch.mit.edu/projects/1169595651/")
-					}\n`,
+					`  ${colors.green("➜")}  ${colors.bold("Scratch")}: ${colorUrl(
+						"https://scratch.mit.edu/projects/1169595651/",
+					)}\n`,
 				);
-				const code = `${
-					colors.magenta('import')
-				}${colors.green('(')}${colors.cyan(`"http://localhost:${server.config.server.port}"`)}${colors.green(')')}`;
+				const code = `${colors.magenta(
+					"import",
+				)}${colors.green("(")}${colors.cyan(`"http://localhost:${server.config.server.port}"`)}${colors.green(")")}`;
 				process.stdout.write(
-					`  ${colors.green("➜")}  ${colors.bold("Inject")}:  ${
-						code
-					}\n`,
+					`  ${colors.green("➜")}  ${colors.bold("Inject")}:  ${code}\n`,
 				);
 				return res;
 			};
@@ -68,6 +65,6 @@ export default defineConfig({
 			name: "ScratchCloudManager",
 			fileName: "scratch-cloud-manager",
 			formats: ["es"],
-		}
-	}
+		},
+	},
 });

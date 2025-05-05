@@ -1,0 +1,3 @@
+import renderManager from "./";
+
+renderManager();
