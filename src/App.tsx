@@ -1,6 +1,7 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Manager } from "./features/manager";
+import { enableCloudEvenSeenProgram } from "./lib";
 import { type ManagerStore, StoreContext } from "./store";
 
 function App() {
@@ -14,6 +15,10 @@ function App() {
 		cloudData: {},
 	});
 	const [store, setStore] = _store;
+
+	onMount(() => {
+		enableCloudEvenSeenProgram();
+	});
 
 	return (
 		<StoreContext.Provider value={_store}>

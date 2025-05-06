@@ -53,3 +53,70 @@ export const connectedWebSocketWatcher = (
 		}
 	};
 };
+
+export interface ReactFiber {
+	child: ReactFiber | null;
+	sibling: ReactFiber | null;
+	// biome-ignore lint/complexity/noBannedTypes:
+	type: string | Function;
+	// biome-ignore lint/complexity/noBannedTypes:
+	elementType: Function & {
+		propTypes: Record<string, unknown>;
+	};
+}
+export function getReactRootFiber() {
+	const app = document.getElementById("app");
+	if (!app) {
+		return null;
+	}
+	// biome-ignore lint/suspicious/noExplicitAny:
+	const root = (app as any)._reactRootContainer._internalRoot
+		.current as ReactFiber;
+	if (!root) {
+		return null;
+	}
+	return root;
+}
+export function getSpecifiedFiber(
+	root: ReactFiber,
+	cond: (fiber: ReactFiber) => boolean,
+) {
+	const stack = [root];
+	while (true) {
+		const fiber = stack.pop();
+		if (!fiber) {
+			return null;
+		}
+
+		if (cond(fiber)) {
+			return fiber;
+		}
+		if (fiber.child) {
+			stack.push(fiber.child);
+		}
+		if (fiber.sibling) {
+			stack.push(fiber.sibling);
+		}
+	}
+}
+
+export function enableCloudEvenSeenProgram() {
+	const root = getReactRootFiber();
+	if (!root) {
+		return;
+	}
+	const cloudManagerHOCFiber = getSpecifiedFiber(root, (fiber) => {
+		if (typeof fiber.type === "function") {
+			const propTypes = fiber.elementType.propTypes;
+			if (propTypes && "canModifyCloudData" in propTypes) {
+				return true;
+			}
+		}
+		return false;
+	});
+	if (!cloudManagerHOCFiber) {
+		return;
+	}
+	const cloudManagerHOC = cloudManagerHOCFiber.elementType.prototype;
+	cloudManagerHOC.disconnectFromCloud = () => null;
+}
